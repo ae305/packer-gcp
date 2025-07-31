@@ -1,0 +1,26 @@
+name: Build Packer Image
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Packer
+        uses: hashicorp/setup-packer@v3
+
+      - name: Initialize Packer
+        run: packer init ./path/to/your/packer/template.pkr.hcl
+
+      - name: Validate Packer template
+        run: packer validate ./path/to/your/packer/template.pkr.hcl
+
+      - name: Build Packer image
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        run: packer build ./path/to/your/packer/template.pkr.hcl
