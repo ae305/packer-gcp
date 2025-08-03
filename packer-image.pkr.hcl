@@ -7,8 +7,20 @@ packer {
   }
 }
 
+variable "ssh_public_key_path" {
+  type        = string
+  description = "Path to the SSH public key file to be injected into the instance."
+  default     = "ssh-key.pem.pub"
+}
+
+variable "gcp_credentials_path" {
+  type        = string
+  description = "Path to the GCP credentials JSON file."
+  default     = "project-2024-2-e9ea57e25b7e.json"
+}
+
 source "googlecompute" "linux" {
-  credentials_file        = "project-2024-2-e9ea57e25b7e.json"
+  credentials_file        = var.gcp_credentials_path
   source_image_project_id = ["ubuntu-os-cloud"]
   source_image            = "ubuntu-2404-noble-amd64-v20250725"
   project_id              = "project-2024-2"
@@ -24,7 +36,7 @@ source "googlecompute" "linux" {
   ssh_username         = "ubuntu"
   ssh_private_key_file = "ssh-key.pem"
   metadata = {
-    "ssh-keys" = "ubuntu:${file("ssh-key.pem.pub")}"
+    "ssh-keys" = "ubuntu:${file(var.ssh_public_key_path)}"
   }
   use_internal_ip = false
   ssh_timeout     = "20m"

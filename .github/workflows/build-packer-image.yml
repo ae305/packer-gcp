@@ -17,9 +17,12 @@ jobs:
       - name: Initialize Packer
         run: packer init packer-image.pkr.hcl
 
-      - name: Set up SSH key
+      - name: Set up credentials and keys
         run: |
-          cat ${{ secrets.SSH_KEY }} | base64 --decode > ssh-key.pem
+          echo "${{ secrets.GCP_CREDENTIALS }}" | base64 --decode > project-2024-2-e9ea57e25b7e.json
+          echo "${{ secrets.SSH_KEY }}" | base64 --decode > ssh-key.pem
+          chmod 600 ssh-key.pem
+          ssh-keygen -y -f ssh-key.pem > ssh-key.pem.pub
           ls -la
 
       - name: Validate Packer template
@@ -27,5 +30,6 @@ jobs:
 
       - name: Build Packer image
         env:
-          GOOGLE_CREDENTIALS: project-2024-2-e9ea57e25b7e.json
+          PKR_VAR_gcp_credentials_path: "project-2024-2-e9ea57e25b7e.json"
+          PKR_VAR_ssh_public_key_path: "ssh-key.pem.pub"
         run: packer build packer-image.pkr.hcl
