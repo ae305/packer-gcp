@@ -1,3 +1,12 @@
+packer {
+  required_plugins {
+    googlecompute = {
+      version = ">= 1.2.1"
+      source  = "github.com/hashicorp/googlecompute"
+    }
+  }
+}
+
 source "googlecompute" "linux" {
   credentials_file        = "project-2024-2-e9ea57e25b7e.json"
   source_image_project_id = ["ubuntu-os-cloud"]

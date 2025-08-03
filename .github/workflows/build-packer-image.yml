@@ -15,12 +15,17 @@ jobs:
         uses: hashicorp/setup-packer@v3
 
       - name: Initialize Packer
-        run: packer init ./path/to/your/packer/template.pkr.hcl
+        run: packer init packer-image.pkr.hcl
+
+      - name: Set up SSH key
+        run: |
+          cat ${{ secrets.SSH_KEY }} | base64 --decode > ssh-key.pem
+          ls -la
 
       - name: Validate Packer template
-        run: packer validate ./path/to/your/packer/template.pkr.hcl
+        run: packer validate packer-image.pkr.hcl
 
       - name: Build Packer image
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-        run: packer build ./path/to/your/packer/template.pkr.hcl
+          GOOGLE_CREDENTIALS: project-2024-2-e9ea57e25b7e.json
+        run: packer build packer-image.pkr.hcl
