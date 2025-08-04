@@ -19,12 +19,18 @@ variable "gcp_credentials_path" {
   default     = "project-2024-2-e9ea57e25b7e.json"
 }
 
+variable "image_name" {
+  type        = string
+  description = "The name of the output Google Compute Image."
+  default     = "packer-ubuntu-2404-${timestamp()}"
+}
+
 source "googlecompute" "linux" {
   credentials_file        = var.gcp_credentials_path
   source_image_project_id = ["ubuntu-os-cloud"]
   source_image            = "ubuntu-2404-noble-amd64-v20250725"
   project_id              = "project-2024-2"
-  image_name              = "packer-ubuntu-2404-${uuidv4()}"
+  image_name              = var.image_name
   instance_name           = "packer-ubuntu-2404"
   zone                    = "us-east4-a"
   machine_type            = "e2-small"
