@@ -9,18 +9,18 @@ on:
         options:
           - Dev
         default: 'Dev'
-      # image_to_bake:
+      # gcp_image_to_bake:
       #   description: 'Image to bake'
       #   type: choice
       #   options:
       #     - Ubuntu 24.04
       #   default: 'Ubuntu 24.04'
-      image_name:
+      gcp_image_name:
         description: 'Name of Image'
         type: string
         required: true
         default: 'packer-ubuntu-2404'
-      source_image_name:
+      gcp_source_image_name:
         description: 'Source Image Name'
         type: string
         required: true
@@ -55,8 +55,8 @@ jobs:
       - name: Build Packer image
         env:
           PKR_VAR_gcp_credentials_path: "project-2024-2-e9ea57e25b7e.json"
-          PKR_VAR_ssh_public_key_path: "ssh-key.pem.pub"
-          PKR_VAR_image_name: ${{ inputs.image_name }}
-          PKR_VAR_source_image_name: ${{ inputs.source_image_name }}
+          PKR_VAR_gcp_sh_public_key_path: "ssh-key.pem.pub"
+          PKR_VAR_gcp_image_name: ${{ inputs.gcp_image_name }}
+          PKR_VAR_gcp_source_image_name: ${{ inputs.gcp_source_image_name }}
 
         run: packer build packer-image.pkr.hcl

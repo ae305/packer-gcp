@@ -7,39 +7,15 @@ packer {
   }
 }
 
-variable "ssh_public_key_path" {
-  type        = string
-  description = "Path to the SSH public key file to be injected into the instance."
-  default     = "ssh-key.pem.pub"
-}
-
-variable "gcp_credentials_path" {
-  type        = string
-  description = "Path to the GCP credentials JSON file."
-  default     = "project-2024-2-e9ea57e25b7e.json"
-}
-
-variable "image_name" {
-  type        = string
-  description = "The name of the output Google Compute Image."
-  default     = "packer-ubuntu-2404-${timestamp()}"
-}
-
-variable "source_image_name" {
-  type        = string
-  description = "The source image to use for the build."
-  default     = "ubuntu-2404-noble-amd64-v20250725"
-}
-
 source "googlecompute" "linux" {
   credentials_file        = var.gcp_credentials_path
   source_image_project_id = ["ubuntu-os-cloud"]
-  source_image            = var.source_image_name
+  source_image            = var.gcp_source_image_name
   project_id              = "project-2024-2"
-  image_name              = var.image_name
+  image_name              = var.gcp_image_name
   instance_name           = "packer-ubuntu-2404"
   zone                    = "us-east4-a"
-  machine_type            = "e2-small"
+  machine_type            = "e2-micro"
   image_description       = "Packer built Ubuntu 24.04 image"
   image_labels = {
     "created_by" = "packer"
@@ -48,7 +24,7 @@ source "googlecompute" "linux" {
   ssh_username         = "ubuntu"
   ssh_private_key_file = "ssh-key.pem"
   metadata = {
-    "ssh-keys" = "ubuntu:${file(var.ssh_public_key_path)}"
+    "ssh-keys" = "ubuntu:${file(var.gcp_ssh_public_key_path)}"
   }
   use_internal_ip = false
   ssh_timeout     = "20m"
