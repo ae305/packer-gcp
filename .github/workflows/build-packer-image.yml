@@ -2,7 +2,13 @@ name: Build Packer Image
 
 on:
   workflow_dispatch: 
-
+    inputs: 
+      environment:
+        description: 'Environment to build the image for'
+        type: choice
+        options:
+          - Dev
+        default: 'Dev'
 jobs:
   packer:
     runs-on: ubuntu-latest
