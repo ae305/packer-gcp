@@ -39,7 +39,7 @@ jobs:
         uses: hashicorp/setup-packer@v3
 
       - name: Initialize Packer
-        run: packer init packer-image.pkr.hcl
+        run: packer init .
 
       - name: Set up credentials and keys
         run: |
@@ -50,13 +50,13 @@ jobs:
           ls -la
 
       - name: Validate Packer template
-        run: packer validate packer-image.pkr.hcl
+        run: packer validate .
 
       - name: Build Packer image
         env:
           PKR_VAR_gcp_credentials_path: "project-2024-2-e9ea57e25b7e.json"
-          PKR_VAR_gcp_sh_public_key_path: "ssh-key.pem.pub"
+          PKR_VAR_gcp_ssh_public_key_path: "ssh-key.pem.pub"
           PKR_VAR_gcp_image_name: ${{ inputs.gcp_image_name }}
           PKR_VAR_gcp_source_image_name: ${{ inputs.gcp_source_image_name }}
 
-        run: packer build packer-image.pkr.hcl
+        run: packer build .
