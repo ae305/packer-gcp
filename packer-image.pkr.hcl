@@ -25,10 +25,16 @@ variable "image_name" {
   default     = "packer-ubuntu-2404-${timestamp()}"
 }
 
+variable "source_image_name" {
+  type        = string
+  description = "The source image to use for the build."
+  default     = "ubuntu-2404-noble-amd64-v20250725"
+}
+
 source "googlecompute" "linux" {
   credentials_file        = var.gcp_credentials_path
   source_image_project_id = ["ubuntu-os-cloud"]
-  source_image            = "ubuntu-2404-noble-amd64-v20250725"
+  source_image            = var.source_image_name
   project_id              = "project-2024-2"
   image_name              = var.image_name
   instance_name           = "packer-ubuntu-2404"
