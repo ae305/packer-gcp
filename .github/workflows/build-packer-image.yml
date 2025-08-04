@@ -12,6 +12,7 @@ on:
 jobs:
   packer:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Checkout repository
@@ -38,4 +39,5 @@ jobs:
         env:
           PKR_VAR_gcp_credentials_path: "project-2024-2-e9ea57e25b7e.json"
           PKR_VAR_ssh_public_key_path: "ssh-key.pem.pub"
+
         run: packer build packer-image.pkr.hcl
