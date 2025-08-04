@@ -18,8 +18,6 @@ on:
       gcp_image_name:
         description: 'Name of Image'
         type: string
-        required: true
-        default: 'packer-ubuntu-2404'
       gcp_source_image_name:
         description: 'Source Image Name'
         type: string

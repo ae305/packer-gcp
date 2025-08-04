@@ -13,11 +13,10 @@ variable "gcp_credentials_path" {
 variable "gcp_image_name" {
   type        = string
   description = "The name of the output Google Compute Image."
-  default     = "packer-ubuntu-2404-${timestamp()}"
+  default     = "packer-ubuntu-2404-${uuidv4()}"
 }
 
 variable "gcp_source_image_name" {
   type        = string
   description = "The source image to use for the build."
-  default     = "ubuntu-2404-noble-amd64-v20250725"
 }
